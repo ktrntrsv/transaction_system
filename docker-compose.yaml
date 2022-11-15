@@ -6,7 +6,7 @@ services:
       context: "."
     restart: unless-stopped
     ports:
-      - "5001:5001"
+      - "1323:1323"
     depends_on:
       - db
   db:

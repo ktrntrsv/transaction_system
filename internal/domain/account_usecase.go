@@ -22,6 +22,22 @@ func NewAccountUsecase(accRepo accountRepository) *AccountUsecase {
 	return &AccountUsecase{accRepo: accRepo}
 }
 
+func (uc *AccountUsecase) GetBalance(ctx context.Context, accId uuid.UUID) (float64, error) {
+	var balance float64
+	err := uc.accRepo.WithinTransaction(
+		ctx,
+		func(ctx context.Context) error {
+			account, err := uc.accRepo.GetByIdWithLock(ctx, accId)
+			if err != nil {
+				return ErrAccountNotFound
+			}
+			balance = account.Balance
+			return nil
+		})
+
+	return balance, err
+}
+
 func (uc *AccountUsecase) TransferMoney(ctx context.Context, accFromId uuid.UUID, accToId uuid.UUID, amount float64) error {
 
 	err := uc.accRepo.WithinTransaction(

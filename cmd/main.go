@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github.com/ktrntrsv/transactionService/internal/adapters/api"
+	"github.com/ktrntrsv/transactionService/internal/adapters"
 	"github.com/ktrntrsv/transactionService/internal/adapters/db"
 	"github.com/ktrntrsv/transactionService/internal/config"
 	"github.com/ktrntrsv/transactionService/internal/domain"
@@ -31,7 +31,7 @@ func main() {
 
 	accUsecase := domain.NewAccountUsecase(accRepository)
 
-	e := api.SetRoutes(l, accUsecase)
+	e := adapters.SetRoutes(l, accUsecase)
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
 
