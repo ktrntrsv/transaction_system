@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+  app:
+    build:
+      context: "."
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./migrations/setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    ports:
+      - "5431:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pwd
